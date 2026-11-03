@@ -1,0 +1,298 @@
+/* Shared PSAC / PSACP card design. Replace the custom card CSS, do not append
+   it to the previous sandbox rules. Owl owns stage layout, width and movement. */
+@font-face {
+  font-family: 'Owl Font Awesome'; font-style: normal; font-weight: 900;
+  font-display: block;
+  src: url('./assets/fa-solid-900.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Owl Font Awesome'; font-style: normal; font-weight: 400;
+  font-display: block;
+  src: url('./assets/fa-regular-400.woff2') format('woff2');
+}
+#top :is(.psac-post-carousel, .psacp-post-carousel-wrap) {
+  --_item-height: 350px;
+  --_item-cta-h-ratio: .35;
+  --_item-gutter-ratio: .2;
+  --_item-pad-ratio: .5;
+  --_item-gap-ratio: .65;
+  --_item-gap-sm-ratio: .65;
+  --_item-cta-height: calc(var(--_item-height) * var(--_item-cta-h-ratio));
+  --_item-gutter: calc(var(--_item-cta-height) * var(--_item-gutter-ratio));
+  --_item-pad: calc(var(--_item-gutter) * var(--_item-pad-ratio));
+  --_item-gap: calc(var(--_item-pad) * var(--_item-gap-ratio));
+  --_item-gap-sm: calc(var(--_item-gap) * var(--_item-gap-sm-ratio));
+  --owl-dot-w: 20px;
+  --owl-dot-w-grow: 3;
+  --owl-dot-w-active: calc(var(--owl-dot-w) * var(--owl-dot-w-grow));
+  --maincolor-border: color-mix(in srgb, var(--maincolor), rgb(255 255 255 / 18%) 92%);
+  --darkbg-border: color-mix(in srgb, var(--darkbg), rgb(255 255 255 / 18%) 92%);
+
+  & *, & *::before, & *::after { box-sizing: border-box; }
+  & a { text-decoration: none; }
+  & .owl-item {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    height: var(--_item-height);
+    border: 1px solid var(--border-color, #888);
+    border-radius: var(--border-radius, 0);
+  }
+  & :is(.psac-post-carousel-slide, .psacp-post-slide, .psacp-post-carousel-content) {
+    display: block;
+    position: relative;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  & :is(.psac-post-image-bg, .psacp-post-img-bg) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100% !important; /* Overrides exported legacy height:400px. */
+    z-index: 0;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    pointer-events: none;
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: color-mix(in srgb, var(--lightbg-transp) 72%, transparent);
+      backdrop-filter: grayscale(1);
+      transition: background-color 300ms ease, backdrop-filter 300ms ease;
+    }
+  }
+  & :is(.psac-link-overlay, .psacp-post-linkoverlay) {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    pointer-events: auto;
+  }
+  & :is(.psac-post-carousel-content, .psacp-post-overlay) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    padding: var(--_item-gutter);
+    margin: 0;
+    background: transparent;
+    color: var(--lightbg);
+    text-align: left;
+    z-index: 3;
+    pointer-events: none;
+  }
+  & :is(.psac-post-carousel-content, .psacp-post-overlay, .psac-post-content, .psacp-post-content) {
+    transform: translate3d(0, 0, 0);
+    transition: transform 300ms ease;
+  }
+  & :is(.psac-post-content, .psacp-post-content) {
+    position: absolute;
+    inset: auto 0 0;
+    height: var(--_item-cta-height);
+    padding: var(--_item-gutter);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 4;
+    pointer-events: none;
+  }
+  & :is(.psac-post-short-content, .psacp-post-desc, .psac-sep, .psacp-post-meta-sep) { display: none !important; }
+  & :is(.psac-readmorebtn, .psacp-rdmr-btn) {
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    height: auto;
+    padding: var(--_item-gap-sm) var(--_item-gap);
+    margin: var(--_item-pad) 0 0;
+    background: var(--darkbg);
+    color: var(--lightbg);
+    border: 1px solid var(--darkbg);
+    text-transform: uppercase;
+    font-family: var(--mainfont);
+    font-size: inherit;
+    letter-spacing: .04em;
+    pointer-events: auto;
+    &::after {
+      content: '\f061';
+      font-family: 'Owl Font Awesome';
+      font-weight: 900;
+      font-style: normal;
+      padding: 0 var(--_item-gap);
+      font-size: .7em;
+      line-height: 1;
+    }
+    &:is(:hover, :focus-visible) {
+      color: var(--darkbg);
+      background: var(--lightbg);
+      border-color: var(--lightbg);
+    }
+  }
+  & :is(.psac-post-categories, .psacp-post-cats) {
+    display: inline-flex;
+    position: relative;
+    margin: 0 0 10%;
+    gap: 3px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    order: -1;
+    font-size: .7rem;
+    line-height: 1.25;
+    text-align: left;
+    & a {
+      display: inline-flex;
+      align-items: center;
+      border-radius: var(--border-radius, 0);
+      background: var(--maincolor) !important;
+      color: var(--lightbg) !important;
+      padding: var(--_item-gap-sm) var(--_item-gap);
+      font-size: inherit;
+      line-height: inherit;
+      font-weight: 500;
+      border: 1px solid var(--maincolor-border);
+      pointer-events: auto;
+      &:is(:hover, :focus-visible) {
+        background: var(--lightbg) !important;
+        color: var(--darkbg) !important;
+        border-color: var(--darkbg-border) !important;
+      }
+    }
+  }
+  & :is(.psac-post-title, .psacp-post-title) {
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: calc(1.5rem - .5vmin);
+    font-weight: 500;
+    line-height: normal;
+    text-align: left !important;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    max-width: 100%;
+    hyphens: manual;
+    & a {
+      display: inline;
+      padding: 0 var(--_item-gap) !important;
+      margin: 0 !important;
+      font-weight: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      text-transform: none !important;
+      background: var(--lightbg);
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      pointer-events: auto;
+    }
+  }
+  & :is(.psac-post-meta, .psacp-post-meta) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 8px 0 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--lightbg) !important;
+    font-size: .5rem;
+    line-height: 1.25;
+    & :is(.psac-post-meta-innr, .psacp-post-meta-data) {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0;
+      padding: var(--_item-gap-sm) var(--_item-gap) !important;
+      background: var(--darkbg);
+      border: 1px solid color-mix(in srgb, var(--darkblue), rgb(255 255 255 / 18%) 92%);
+      font-family: var(--mainfont);
+      font-size: inherit;
+      font-style: normal;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+    & a { color: inherit; pointer-events: auto; }
+  }
+  /* Explicit weights cover both fa-solid fa-user and fa-regular fa-clock.
+     Legacy metadata receives identical icons without changing its markup. */
+  & .psacp-fa, & .psac-user-img::before, & .psac-time::before {
+    display: inline-block;
+    font-family: 'Owl Font Awesome' !important;
+    font-style: normal;
+    font-size: inherit;
+    line-height: 1;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+  & .psacp-fa.fa-solid, & .psac-user-img::before { font-weight: 900; }
+  & .psacp-fa.fa-regular, & .psac-time::before { font-weight: 400; }
+  & .psacp-fa.fa-user::before, & .psac-user-img::before { content: '\f007'; }
+  & .psacp-fa.fa-clock::before, & .psac-time::before { content: '\f017'; }
+
+  & .owl-item:focus-within {
+    & :is(.psac-post-image-bg, .psacp-post-img-bg)::before {
+      background: color-mix(in srgb, var(--darkblue2, #0c0b0f) 92%, transparent);
+      backdrop-filter: grayscale(0);
+    }
+    & :is(.psac-post-carousel-content, .psacp-post-overlay, .psac-post-content, .psacp-post-content) {
+      transform: translate3d(0, -10%, 0);
+    }
+  }
+  @media (hover: hover) {
+    & .owl-item:hover {
+      & :is(.psac-post-image-bg, .psacp-post-img-bg)::before {
+        background: color-mix(in srgb, var(--darkblue2, #0c0b0f) 92%, transparent);
+        backdrop-filter: grayscale(0);
+      }
+      & :is(.psac-post-carousel-content, .psacp-post-overlay, .psac-post-content, .psacp-post-content) {
+        transform: translate3d(0, -10%, 0);
+      }
+    }
+  }
+  & a:focus-visible { outline: 2px solid var(--maincolor); outline-offset: 2px; }
+  & .owl-dots {
+    display: flex;
+    gap: var(--_item-gap);
+    width: 100%;
+    max-width: 300px;
+    margin: var(--_item-gutter) auto var(--_item-pad);
+    justify-content: center;
+    align-items: center;
+    & .owl-dot {
+      border-radius: var(--border-radius, 0);
+      background: var(--border-color) !important;
+      border: 1px solid var(--darkblue);
+      height: var(--owl-dot-w) !important;
+      width: var(--owl-dot-w) !important;
+      margin: 0;
+      padding: 0;
+      opacity: .5;
+      transition: opacity 300ms, width 300ms, border-color 300ms;
+      &.active { width: var(--owl-dot-w-active) !important; }
+      &:is(.active, :hover, :focus-visible) { background: var(--maincolor) !important; opacity: 1; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & *, & *::before, & *::after { transition: none !important; }
+  }
+}

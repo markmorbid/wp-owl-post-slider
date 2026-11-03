@@ -1,0 +1,9 @@
+# Preserve approved bytes and original line endings.
+*.css -text
+*.html -text
+*.woff2 binary
+*.png binary
+*.svg -text
+*.md text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
